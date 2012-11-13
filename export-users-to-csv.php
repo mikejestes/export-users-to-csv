@@ -101,6 +101,10 @@ class PP_EU_Export_Users {
 				'user_registered', 'user_activation_key', 'user_status',
 				'display_name'
 			);
+			if (!empty($_POST['include_password'])) {
+				$exclude_data = array_diff($exclude_data, array('user_pass'));
+			}
+
 			$meta_keys = $wpdb->get_results( "SELECT distinct(meta_key) FROM $wpdb->usermeta" );
 			$meta_keys = wp_list_pluck( $meta_keys, 'meta_key' );
 			$fields = array_merge( $data_keys, $meta_keys );
@@ -173,6 +177,12 @@ class PP_EU_Export_Users {
 						<option value="0"><?php _e( 'End Date', 'export-users-to-csv' ); ?></option>
 						<?php $this->export_date_options(); ?>
 					</select>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label><?php _e( 'Include Password Field', 'export-users-to-csv' ); ?></label></th>
+				<td>
+					<input type="checkbox" name="include_password" id="pp_eu_users_include_password" />
 				</td>
 			</tr>
 		</table>
